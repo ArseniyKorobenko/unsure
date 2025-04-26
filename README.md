@@ -39,4 +39,5 @@ inherits np.ndarray, so you can use any numpy operations (exp, quantile, std, ..
     True  |  90.0% | ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
     False |  10.0% | ▒▒▒▒
 ```
-for more information see Unsure Calculator at https://filiph.github.io/unsure/
+for more information see Unsure Calculator at https://filiph.github.io/unsure/  
+also check out [Implementing Unsure Calculator in 100 lines of Haskell](https://alt-romes.github.io/posts/2025-04-25-unsure-calculator-in-100-lines-of-haskell.html) for a slightly longer alternative take on the problem
