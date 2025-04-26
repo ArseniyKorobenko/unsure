@@ -3,7 +3,7 @@ r(min, mode, max): PERT distribution (recommended), takes the mininum, most like
 n(a, b): normal distribution, 90% confidence values are between `a` and `b`
 u(a, b): uniform distribution between `a` and `b`
 
-hist(np.array): convert from an array of random samples. size should match hist._samples to interact with other distrubutions
+hist(np.array): convert from an array of random samples. size should match hist.samples to interact with other distrubutions
 distributions inherit np.ndarray, so you can use any array operations on these objects (np.exp, np.std, np.quantile, plt.hist, sns.kdeplot, etc)
 
 example usage:
@@ -44,8 +44,8 @@ for more information see Unsure Calculator https://filiph.github.io/unsure/
 import numpy as np
 class hist(np.ndarray):
     '''Base class for distributions. plots a histogram'''
-    _max_width = 40  # max bar width in characters
-    _samples   = 500_000
+    max_width = 40  # max bar width in characters
+    samples   = 500_000
 
     def __new__(cls, a, /):
         return a.view(cls)
@@ -60,7 +60,7 @@ class hist(np.ndarray):
         bin_midpoints = (bin_edges[:-1] + bin_edges[1:]) / 2
         bins = [' below', *[f'{edge:< .4g}' for edge in bin_midpoints], ' above']
         len_bin = max(len(b) for b in bins)
-        bars = (counts / counts.max() * self._max_width).astype(int)
+        bars = (counts / counts.max() * self.max_width).astype(int)
         lines = [f'{p:6.1%} | {b:<{len_bin}} | {'▒' * bar}' for p, b, bar in zip(percentages, bins, bars)]
         median_position = np.searchsorted(bin_edges, median)
         lines[median_position] += f'  ({median = })'
@@ -71,8 +71,8 @@ class hist(np.ndarray):
         if self.dtype == 'bool':
             t = self.sum() / self.size
             f = 1 - t
-            return f'True  | {t:6.1%} | {'▒' * int(self._max_width * t / max(t, f))}\n' +\
-                   f'False | {f:6.1%} | {'▒' * int(self._max_width * f / max(t, f))}'
+            return f'True  | {t:6.1%} | {'▒' * int(self.max_width * t / max(t, f))}\n' +\
+                   f'False | {f:6.1%} | {'▒' * int(self.max_width * f / max(t, f))}'
         a, b = np.quantile(self, [0.5, 0.95])
         if np.allclose(a, b):  # likely a single number
             return repr((a + b) / 2)
@@ -84,11 +84,11 @@ class r(hist):
     def __new__(cls, a, b, c, /):
         if a > c: a, c = c, a
         assert a <= b <= c
-        lamb = 4
+        w = 4  # mean = (a + b*w + c) / (2 + w)
         r = c - a
-        alpha = 1 + lamb * (b - a) / r
-        beta = 1 + lamb * (c - b) / r
-        data = a + np.random.beta(alpha, beta, cls._samples) * r
+        alpha = 1 + w * (b - a) / r
+        beta = 1 + w * (c - b) / r
+        data = a + np.random.beta(alpha, beta, cls.samples) * r
         return data.view(cls)
 
 
@@ -98,12 +98,12 @@ class n(hist):
         zscore = 2 * 1.64  # this determines the percentage of values between `a` and `b`
         mean = (a + b) / 2
         std = np.abs(a - b) / zscore
-        data = np.random.normal(mean, std, cls._samples)
+        data = np.random.normal(mean, std, cls.samples)
         return data.view(cls)
 
 
 class u(hist):
     '''Uniform distribution'''
     def __new__(cls, a, b, /):
-        data = np.random.uniform(min(a, b), max(a, b))
+        data = np.random.uniform(min(a, b), max(a, b), cls.samples)
         return data.view(cls)
