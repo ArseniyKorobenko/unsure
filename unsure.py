@@ -1,3 +1,4 @@
+# (c) 2025 Arseniy Korobenko. Subject to the MIT license.
 import numpy as np
 class hist(np.ndarray):
     '''Base class for distributions. plots a histogram'''
