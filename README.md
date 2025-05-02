@@ -8,8 +8,9 @@ r(min, mode, max): PERT distribution (recommended), takes the mininum, most like
 n(a, b): normal distribution, 90% confidence values are between `a` and `b`  
 u(a, b): uniform distribution between `a` and `b`  
 
-hist(np.array): convert from an array of random samples. size should match hist._samples to interact with other distrubutions  
-distributions inherit np.ndarray, so you can use any array operations on these objects (np.exp, np.std, np.quantile, plt.hist, sns.kdeplot, etc)
+hist(np.array): convert from an array of random samples. size should match hist.samples to broadcast with other distrubutions  
+distributions inherit np.ndarray, so you can use all the usual array operations on these objects (np.exp, np.std, np.quantile, plt.hist, sns.kdeplot, etc)  
+see unsure.py for how to define your own custom distribution
 
 example usage:
 ```py
