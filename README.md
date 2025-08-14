@@ -1,8 +1,6 @@
 # unsure
 numpy-powered version of [Unsure Calculator](https://filiph.github.io/unsure/) (unofficial)  
-for use in jupyter notebooks and python repls
-
-python doesn't let you define custom operators on builtin types so here it's just a normal class constructor.  
+intended for use in jupyter notebooks and python repls, but also works well with print() in scripts.
 
 r(min, mode, max): PERT distribution (recommended), takes the mininum, most likely, and maximum value  
 n(a, b): normal distribution, 90% confidence values are between `a` and `b`  
