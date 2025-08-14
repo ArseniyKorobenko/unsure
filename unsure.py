@@ -20,7 +20,7 @@ class hist(np.ndarray):
         bars = (counts / counts.max() * self.max_width).astype(int)
         lines = [f'{p:6.1%} | {b:<{len_bin}} | {'▒' * bar}' for p, b, bar in zip(percentages, bins, bars)]
         median_position = np.searchsorted(bin_edges, median)
-        lines[median_position] += f'  ({median = })'
+        lines[median_position] += f'  ({median = :.5f})'
         return '\n'.join(reversed(lines))
 
     def bool_hist(self) -> str:
@@ -33,7 +33,7 @@ class hist(np.ndarray):
     def __repr__(self): 
         if self.dtype == 'bool':
             return self.bool_hist()
-        a, b = np.quantile(self, [0.5, 0.95])
+        a, b = np.quantile(self, [0.05, 0.95])
         if np.allclose(a, b):  # likely a single number
             return repr((a + b) / 2)
         return f'{a:.4g}~{b:.4g}\n\n' + self.hist()
